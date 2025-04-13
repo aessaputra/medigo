@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -13,7 +16,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return 'apotek sinar antangin';
+        $products = Product::all();
+        return view('admin.products.index', [
+            'products' => $products
+        ]);
     }
 
     /**
@@ -32,7 +38,36 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'about' => 'required|string',
+            'category_id' => 'required|integer',
+            'price' => 'required|integer',
+            'photo' => 'required|image|mimes:png,jpg,svg|max:2048',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            if ($request->hasFile('photo')) {
+                $photoPath = $request->file('photo')->store('product_photos', 'public');
+                $validated['photo'] = $photoPath;
+            }
+
+            $validated['slug'] = Str::slug($request->name);
+            $newProduct = Product::create($validated);
+
+            DB::commit();
+
+            return redirect()->route('admin.products.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $error = ValidationException::withMessages([
+                'system_error' => ['System error! ' . $e->getMessage()]
+            ]);
+
+            throw $error;
+        }
     }
 
     /**

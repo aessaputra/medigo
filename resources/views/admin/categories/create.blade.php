@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('admin.categories.store') }}">
                     @csrf
 
                     <!-- Name -->
@@ -19,7 +19,7 @@
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
-                    <!-- Email Address -->
+                    <!-- Icon -->
                     <div class="mt-4">
                         <x-input-label for="icon" :value="__('Icon')" />
                         <x-text-input id="icon" class="block mt-1 w-full" type="file" name="icon" required

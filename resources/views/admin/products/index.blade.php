@@ -27,11 +27,14 @@
                                 </p>
                             </div>
                         </div>
+                        <p class="text-base text-slate-500">
+                            {{ $product->category->name }}
+                        </p>
                         <div class="flex flex-row items-center gap-x-3">
                             <a href="{{ route('admin.products.edit', $product) }}"
                                 class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">Edit</a>
 
-                            <form method="POST" action="{{ route('admin.categories.destroy', $product) }}">
+                            <form method="POST" action="{{ route('admin.products.destroy', $product) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button class="font-bold py-3 px-5 rounded-full text-white bg-red-700">Delete</button>
@@ -39,6 +42,9 @@
                         </div>
                     </div>
                 @empty
+                    <p>
+                        Belum ada produk ditambahkan oleh pemilik apotek.
+                    </p>
                 @endforelse
 
             </div>

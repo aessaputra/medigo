@@ -8,7 +8,16 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg">
-                <form method="POST" action="{{ route('admin.categories.store') }}">
+
+                {{-- @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="py w-full rounded-3xl bg-red-500 text-white">
+                            {{ $error }}
+                        </div>
+                    @endforeach
+                @endif --}}
+
+                <form method="POST" action="{{ route('admin.categories.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Name -->
@@ -21,7 +30,7 @@
 
                     <!-- Icon -->
                     <div class="mt-4">
-                        <x-input-label for="icon" :value="__('Icon')" />
+                        <x-input-label for="icon" :value="__('icon')" />
                         <x-text-input id="icon" class="block mt-1 w-full" type="file" name="icon" required
                             autofocus autocomplete="icon" />
                         <x-input-error :messages="$errors->get('icon')" class="mt-2" />

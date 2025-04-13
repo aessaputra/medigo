@@ -31,19 +31,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'required|image|mimes:png,jpg,svg|max:2048',
         ]);
 
-        DB::transaction();
+        DB::beginTransaction();
 
         try {
             if ($request->hasFile('icon')) {
                 $iconPath = $request->file('icon')->store('category_icons', 'public');
                 $validated['icon'] = $iconPath;
             }
-            $validate['slug'] = Str::slug($request->name);
+
+            $validated['slug'] = Str::slug($request->name);
             $newCategory = Category::create($validated);
 
             DB::commit();
@@ -52,8 +53,9 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $error = ValidationException::withMessages([
-                'sytem_error' => ['System error! ' . $e->getMessage()]
+                'system_error' => ['System error! ' . $e->getMessage()]
             ]);
+
             throw $error;
         }
     }

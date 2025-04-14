@@ -31,11 +31,19 @@
                             {{ $productTransaction->created_at }}
                         </h3>
                     </div>
-                    <span class="py-1 px-3 rounded-full text-white bg-orange-500">
-                        <p class="text-with font-bold text-sm">
-                            Pending
-                        </p>
-                    </span>
+                    @if ($productTransaction->is_paid)
+                        <span class="py-1 px-3 rounded-full text-white bg-green-500">
+                            <p class="text-with font-bold text-sm">
+                                Succsess
+                            </p>
+                        </span>
+                    @else
+                        <span class="py-1 px-3 rounded-full text-white bg-orange-500">
+                            <p class="text-with font-bold text-sm">
+                                Pending
+                            </p>
+                        </span>
+                    @endif
                 </div>
                 <hr class="my-3">
 
@@ -127,11 +135,17 @@
 
 
                 @role('owner')
-                    <form method="POST" action="{{ route('product_transactions.update', 1) }}">
-                        @csrf
-                        @method('PUT')
-                        <button class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">Approve Order</button>
-                    </form>
+                    @if ($productTransaction->is_paid)
+                        <a href="" class="w-fit font-bold py-3 px-5 rounded-full text-white bg-indigo-700">Whatsapp
+                            Customer
+                        </a>
+                    @else
+                        <form method="POST" action="{{ route('product_transactions.update', $productTransaction) }}">
+                            @csrf
+                            @method('PUT')
+                            <button class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">Approve Order</button>
+                        </form>
+                    @endif
                 @endrole
 
                 @role('buyer')

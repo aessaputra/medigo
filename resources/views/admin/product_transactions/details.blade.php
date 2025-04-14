@@ -19,7 +19,7 @@
                                 Total Transaksi
                             </p>
                             <h3 class="text-2xl font-bold text-indigo-950">
-                                Rp 18,000
+                                Rp {{ $productTransaction->total_amount }}
                             </h3>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                             Date
                         </p>
                         <h3 class="text-2xl font-bold text-indigo-950">
-                            25 January 2025
+                            {{ $productTransaction->created_at }}
                         </h3>
                     </div>
                     <span class="py-1 px-3 rounded-full text-white bg-orange-500">
@@ -45,90 +45,27 @@
 
                 <div class="grid-cols-4 grid gap-x-10">
                     <div class="flex flex-col gap-y-5 col-span-2">
-                        <div class="item-card flex flex-row justify-between items-center">
-                            <div class="flex flex-row items-center gap-x-3">
-                                <img src="#" alt="" class="w-[50px] h-[50px]">
-                                <div>
-                                    <h3 class="text-2xl font-bold text-indigo-950">
-                                        Tolang Angin
-                                    </h3>
-                                    <p class="text-base text-slate-500">
-                                        Rp. 500000
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="text-base text-slate-500">
-                                Vitamins
-                            </p>
-                        </div>
 
-                        <div class="item-card flex flex-row justify-between items-center">
-                            <div class="flex flex-row items-center gap-x-3">
-                                <img src="#" alt="" class="w-[50px] h-[50px]">
-                                <div>
-                                    <h3 class="text-2xl font-bold text-indigo-950">
-                                        Tolang Angin
-                                    </h3>
-                                    <p class="text-base text-slate-500">
-                                        Rp. 500000
-                                    </p>
+                        @forelse ($productTransaction->transactionDetails as $detail)
+                            <div class="item-card flex flex-row justify-between items-center">
+                                <div class="flex flex-row items-center gap-x-3">
+                                    <img src="{{ Storage::url($detail->product->photo) }}" alt=""
+                                        class="w-[50px] h-[50px]">
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-indigo-950">
+                                            {{ $detail->product->name }}
+                                        </h3>
+                                        <p class="text-base text-slate-500">
+                                            Rp. {{ $detail->product->price }}
+                                        </p>
+                                    </div>
                                 </div>
+                                <p class="text-base text-slate-500">
+                                    {{ $detail->product->category->name }}
+                                </p>
                             </div>
-                            <p class="text-base text-slate-500">
-                                Vitamins
-                            </p>
-                        </div>
-
-                        <div class="item-card flex flex-row justify-between items-center">
-                            <div class="flex flex-row items-center gap-x-3">
-                                <img src="#" alt="" class="w-[50px] h-[50px]">
-                                <div>
-                                    <h3 class="text-2xl font-bold text-indigo-950">
-                                        Tolang Angin
-                                    </h3>
-                                    <p class="text-base text-slate-500">
-                                        Rp. 500000
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="text-base text-slate-500">
-                                Vitamins
-                            </p>
-                        </div>
-
-                        <div class="item-card flex flex-row justify-between items-center">
-                            <div class="flex flex-row items-center gap-x-3">
-                                <img src="#" alt="" class="w-[50px] h-[50px]">
-                                <div>
-                                    <h3 class="text-2xl font-bold text-indigo-950">
-                                        Tolang Angin
-                                    </h3>
-                                    <p class="text-base text-slate-500">
-                                        Rp. 500000
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="text-base text-slate-500">
-                                Vitamins
-                            </p>
-                        </div>
-
-                        <div class="item-card flex flex-row justify-between items-center">
-                            <div class="flex flex-row items-center gap-x-3">
-                                <img src="#" alt="" class="w-[50px] h-[50px]">
-                                <div>
-                                    <h3 class="text-2xl font-bold text-indigo-950">
-                                        Tolang Angin
-                                    </h3>
-                                    <p class="text-base text-slate-500">
-                                        Rp. 500000
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="text-base text-slate-500">
-                                Vitamins
-                            </p>
-                        </div>
+                        @empty
+                        @endforelse
 
                         <h3 class="text-2xl font-bold text-indigo-950">
                             Details of Delivery
@@ -139,7 +76,7 @@
                                 Address
                             </p>
                             <h3 class="text-2xl font-bold text-indigo-950">
-                                Orchard No 23
+                                {{ $productTransaction->address }}
                             </h3>
                         </div>
                         <div class="item-card flex flex-row justify-between items-center">
@@ -147,7 +84,7 @@
                                 City
                             </p>
                             <h3 class="text-2xl font-bold text-indigo-950">
-                                Singapura
+                                {{ $productTransaction->city }}
                             </h3>
                         </div>
                         <div class="item-card flex flex-row justify-between items-center">
@@ -155,7 +92,7 @@
                                 Post Code
                             </p>
                             <h3 class="text-2xl font-bold text-indigo-950">
-                                623442
+                                {{ $productTransaction->post_code }}
                             </h3>
                         </div>
                         <div class="item-card flex flex-row justify-between items-center">
@@ -163,7 +100,7 @@
                                 Phone Number
                             </p>
                             <h3 class="text-2xl font-bold text-indigo-950">
-                                456746333
+                                {{ $productTransaction->phone_number }}
                             </h3>
                         </div>
                         <div class="item-card flex flex-col items-start">
@@ -171,7 +108,7 @@
                                 Notes
                             </p>
                             <h3 class="text-lg font-bold text-indigo-950">
-                                Depan Kafe lokal dekat dengan gardu pos 6
+                                {{ $productTransaction->notes }}
                             </h3>
                         </div>
 
@@ -181,7 +118,8 @@
                         <h3 class="text-2xl font-bold text-indigo-950">
                             Proof of Payment:
                         </h3>
-                        <img src="#" alt="" class="w-[300px] bg-red-300 h-[400px]">
+                        <img src="{{ Storage::url($productTransaction->proof) }}"
+                            alt="{{ Storage::url($productTransaction->proof) }}" class="w-[300px]  h-[400px]">
                     </div>
                 </div>
 

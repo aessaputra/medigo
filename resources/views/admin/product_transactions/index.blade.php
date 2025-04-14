@@ -11,100 +11,50 @@
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white flex flex-col gap-y-5 overflow-hidden p-10 shadow-sm sm:rounded-lg">
 
-
-                <div class="item-card flex flex-row justify-between items-center">
-                    <div class="flex flex-row items-center gap-x-3">
+                @forelse($product_transactions as $transaction)
+                    <div class="item-card flex flex-row justify-between items-center">
+                        <div class="flex flex-row items-center gap-x-3">
+                            <div>
+                                <p class="text-base text-slate-500">
+                                    Total Transaksi
+                                </p>
+                                <h3 class="text-2xl font-bold text-indigo-950">
+                                    Rp. {{ $transaction->total_amount }}
+                                </h3>
+                            </div>
+                        </div>
                         <div>
                             <p class="text-base text-slate-500">
-                                Total Transaksi
+                                Date
                             </p>
                             <h3 class="text-2xl font-bold text-indigo-950">
-                                Rp 18,000
+                                {{ $transaction->created_at }}
                             </h3>
                         </div>
-                    </div>
-                    <div>
-                        <p class="text-base text-slate-500">
-                            Date
-                        </p>
-                        <h3 class="text-2xl font-bold text-indigo-950">
-                            25 January 2025
-                        </h3>
-                    </div>
-                    <span class="py-1 px-3 rounded-full text-white bg-orange-500">
-                        <p class="text-with font-bold text-sm">
-                            Pending
-                        </p>
-                    </span>
-                    <div class="flex flex-row items-center gap-x-3">
-                        <a href="#" class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">View
-                            Details</a>
-                    </div>
-                </div>
-                <hr class="my-3">
-
-                <div class="item-card flex flex-row justify-between items-center">
-                    <div class="flex flex-row items-center gap-x-3">
-                        <div>
-                            <p class="text-base text-slate-500">
-                                Total Transaksi
-                            </p>
-                            <h3 class="text-2xl font-bold text-indigo-950">
-                                Rp 18,000
-                            </h3>
+                        @if ($transaction->is_paid)
+                            <span class="py-1 px-3 rounded-full text-white bg-green-500">
+                                <p class="text-with font-bold text-sm">
+                                    Succsess
+                                </p>
+                            </span>
+                        @else
+                            <span class="py-1 px-3 rounded-full text-white bg-orange-500">
+                                <p class="text-with font-bold text-sm">
+                                    Pending
+                                </p>
+                            </span>
+                        @endif
+                        <div class="flex flex-row items-center gap-x-3">
+                            <a href="#" class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">View
+                                Details</a>
                         </div>
                     </div>
-                    <div>
-                        <p class="text-base text-slate-500">
-                            Date
-                        </p>
-                        <h3 class="text-2xl font-bold text-indigo-950">
-                            25 January 2025
-                        </h3>
-                    </div>
-                    <span class="py-1 px-3 rounded-full text-white bg-orange-500">
-                        <p class="text-with font-bold text-sm">
-                            Pending
-                        </p>
-                    </span>
-                    <div class="flex flex-row items-center gap-x-3">
-                        <a href="#" class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">View
-                            Details</a>
-                    </div>
-                </div>
-                <hr class="my-3">
-
-                <div class="item-card flex flex-row justify-between items-center">
-                    <div class="flex flex-row items-center gap-x-3">
-                        <div>
-                            <p class="text-base text-slate-500">
-                                Total Transaksi
-                            </p>
-                            <h3 class="text-2xl font-bold text-indigo-950">
-                                Rp 18,000
-                            </h3>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-base text-slate-500">
-                            Date
-                        </p>
-                        <h3 class="text-2xl font-bold text-indigo-950">
-                            25 January 2025
-                        </h3>
-                    </div>
-                    <span class="py-1 px-3 rounded-full text-white bg-orange-500">
-                        <p class="text-with font-bold text-sm">
-                            Pending
-                        </p>
-                    </span>
-                    <div class="flex flex-row items-center gap-x-3">
-                        <a href="{{ route('product_transactions.show', 1) }}"
-                            class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">View
-                            Details</a>
-                    </div>
-                </div>
-                <hr class="my-3">
+                    <hr class="my-3">
+                @empty
+                    <p>
+                        Belum ada transaksi
+                    </p>
+                @endforelse
 
             </div>
         </div>

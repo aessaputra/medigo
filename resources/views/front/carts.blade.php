@@ -191,28 +191,28 @@
                     <label for="address" class="text-base font-semibold">Address</label>
                     <input type="text" name="address" id="address__"
                         style="background-image:url({{ asset('assets/svgs/ic-location.svg') }})" class="form-input"
-                        value="Tedjamudita 3">
+                        value="">
                 </div>
                 <!-- City -->
                 <div class="flex flex-col gap-2.5">
                     <label for="city" class="text-base font-semibold">City</label>
                     <input type="text" name="city" id="city__"
                         style="background-image:url({{ asset('assets/svgs/ic-map.svg') }})" class="form-input"
-                        value="Bolavia">
+                        value="">
                 </div>
                 <!-- Post Code -->
                 <div class="flex flex-col gap-2.5">
                     <label for="postcode" class="text-base font-semibold">Post Code</label>
                     <input type="number" name="post_code" id="postcode__"
                         style="background-image:url({{ asset('assets/svgs/ic-house.svg') }})" class="form-input"
-                        value="22081882">
+                        value="">
                 </div>
                 <!-- Phone Number -->
                 <div class="flex flex-col gap-2.5">
                     <label for="phonenumber" class="text-base font-semibold">Phone Number</label>
                     <input type="number" name="phone_number" id="phonenumber__"
                         style="background-image:url({{ asset('assets/svgs/ic-phone.svg') }})" class="form-input"
-                        value="602192301923">
+                        value="">
                 </div>
                 <!-- Add. Notes -->
                 <div class="flex flex-col gap-2.5">
@@ -220,7 +220,7 @@
                     <span class="relative">
                         <img src="{{ asset('assets/svgs/ic-edit.svg') }}" class="absolute size-5 top-4 left-4"
                             alt="">
-                        <textarea name="notes" id="notes__" class="form-input !rounded-2xl w-full min-h-[150px]">nearby with local shops that close with the big river next to aftermarket place.</textarea>
+                        <textarea name="notes" id="notes__" class="form-input !rounded-2xl w-full min-h-[150px]"></textarea>
                     </span>
                 </div>
                 <!-- Proof of Payment -->

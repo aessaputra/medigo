@@ -26,26 +26,35 @@
                 <div class="flex flex-col gap-2.5">
                     <label for="fullname" class="text-base font-semibold">Full Name</label>
                     <input style="background-image: url('{{ asset('assets/svgs/ic-profile.svg') }}" type="text"
-                        name="name" id="fullname__" class="form-input" placeholder="Write your full name">
+                        name="name" id="fullname__" class="form-input" placeholder="Write your full name" value="{{ old('name') }}">
+                    @error('name')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <!-- Email Address -->
                 <div class="flex flex-col gap-2.5">
                     <label for="email" class="text-base font-semibold">Email Address</label>
                     <input style="background-image: url('{{ asset('assets/svgs/ic-email.svg') }}" type="email"
-                        name="email" id="email__" class="form-input" placeholder="Your email address">
+                        name="email" id="email__" class="form-input" placeholder="Your email address" value="{{ old('email') }}">
+                    @error('email')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <!-- Password -->
                 <div class="flex flex-col gap-2.5">
                     <label for="password" class="text-base font-semibold">Password</label>
                     <input style="background-image: url('{{ asset('assets/svgs/ic-lock.svg') }}" type="password"
-                        name="password" id="password__" class="form-input" placeholder="Protect your password">
+                        name="password" id="password__" class="form-input" placeholder="Protect your password" required>
+                    @error('password')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <!-- Confirm Password -->
                 <div class="flex flex-col gap-2.5">
                     <label for="password_confirmation" class="text-base font-semibold">Confirm Password</label>
                     <input style="background-image: url('{{ asset('assets/svgs/ic-lock.svg') }}" type="password"
                         name="password_confirmation" id="confirm-password__" class="form-input"
-                        placeholder="Protect your password">
+                        placeholder="Protect your password" required>
                 </div>
                 <button type="submit"
                     class="inline-flex text-white font-bold text-base bg-primary rounded-full whitespace-nowrap px-[30px] py-3 justify-center items-center">

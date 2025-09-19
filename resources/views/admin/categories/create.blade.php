@@ -1,40 +1,43 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('New Category') }}
-        </h2>
+        <div class="page-pretitle">{{ __('Inventory') }}</div>
+        <h2 class="page-title">{{ __('New Category') }}</h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('Category Details') }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('admin.categories.store') }}" enctype="multipart/form-data" novalidate>
+                        @csrf
 
-                <form method="POST" action="{{ route('admin.categories.store') }}" enctype="multipart/form-data">
-                    @csrf
+                        <div class="mb-3">
+                            <x-input-label for="name" :value="__('Name')" />
+                            <x-text-input id="name" type="text" name="name" :value="old('name')" required autofocus
+                                class="{{ $errors->has('name') ? 'is-invalid' : '' }}" />
+                            <x-input-error :messages="$errors->get('name')" />
+                        </div>
 
-                    <!-- Name -->
-                    <div>
-                        <x-input-label for="name" :value="__('Name')" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
-                            :value="old('name')" required autofocus autocomplete="name" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    </div>
+                        <div class="mb-4">
+                            <x-input-label for="icon" :value="__('Icon')" />
+                            <input id="icon" type="file" name="icon"
+                                class="form-control {{ $errors->has('icon') ? 'is-invalid' : '' }}" required>
+                            <x-input-error :messages="$errors->get('icon')" />
+                        </div>
 
-                    <!-- Icon -->
-                    <div class="mt-4">
-                        <x-input-label for="icon" :value="__('icon')" />
-                        <x-text-input id="icon" class="block mt-1 w-full" type="file" name="icon" required
-                            autofocus autocomplete="icon" />
-                        <x-input-error :messages="$errors->get('icon')" class="mt-2" />
-                    </div>
-
-                    <div class="flex items-center justify-end mt-4">
-
-                        <x-primary-button class="ms-4">
-                            {{ __('Add New Category') }}
-                        </x-primary-button>
-                    </div>
-                </form>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary">
+                                {{ __('Cancel') }}
+                            </a>
+                            <x-primary-button>
+                                {{ __('Add New Category') }}
+                            </x-primary-button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

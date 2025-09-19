@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTransactionController;
@@ -13,9 +14,9 @@ Route::get('/search', [FrontController::class, 'search'])->name('front.search');
 Route::get('/details/{product:slug}', [FrontController::class, 'details'])->name('front.product.details');
 Route::get('/category/{category}', [FrontController::class, 'category'])->name('front.product.category');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

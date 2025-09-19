@@ -43,7 +43,7 @@ class ProductController extends Controller
             'about' => 'required|string',
             'category_id' => 'required|integer',
             'price' => 'required|integer',
-            'photo' => 'required|image|mimes:png,jpg,svg|max:2048',
+            'photo' => 'required|image|mimes:png,jpg,svg,webp,avif|max:2048',
         ]);
 
         DB::beginTransaction();

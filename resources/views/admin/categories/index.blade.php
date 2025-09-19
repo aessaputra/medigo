@@ -1,39 +1,68 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-row w-full justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Manage Categories') }}
-            </h2>
-            <a href="{{ route('admin.categories.create') }}"
-                class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">Add
-                Category</a>
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <div>
+                <div class="page-pretitle">{{ __('Inventory') }}</div>
+                <h2 class="page-title">{{ __('Manage Categories') }}</h2>
+            </div>
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+                <span class="ti ti-plus me-1"></span>{{ __('Add Category') }}
+            </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white flex flex-col gap-y-5 overflow-hidden p-10 shadow-sm sm:rounded-lg">
-
-                @forelse ($categories as $category)
-                    <div class="item-card flex flex-row justify-between items-center">
-                        <img src="{{ Storage::url($category->icon) }}" alt="" class="w-[50px] h-[50px]">
-                        <h3 class="text-2xl font-bold text-indigo-950">
-                            {{ $category->name }}
-                        </h3>
-                        <div class="flex flex-row items-center gap-x-3">
-                            <a href="{{ route('admin.categories.edit', $category) }}"
-                                class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">Edit</a>
-
-                            <form method="POST" action="{{ route('admin.categories.destroy', $category) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button class="font-bold py-3 px-5 rounded-full text-white bg-red-700">Delete</button>
-                            </form>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('Category List') }}</h3>
+                </div>
+                <div class="card-body p-0">
+                    @if ($categories->isEmpty())
+                        <div class="p-4 text-center text-secondary">
+                            {{ __('Belum ada kategori ditambahkan.') }}
                         </div>
-                    </div>
-                @empty
-                @endforelse
-
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Category') }}</th>
+                                        <th class="w-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($categories as $category)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="avatar me-3" style="background-image: url('{{ Storage::url($category->icon) }}')"></span>
+                                                    <div class="fw-bold">{{ $category->name }}</div>
+                                                </div>
+                                            </td>
+                                            <td class="text-end">
+                                                <div class="btn-list">
+                                                    <a href="{{ route('admin.categories.edit', $category) }}"
+                                                        class="btn btn-outline-primary btn-sm">
+                                                        {{ __('Edit') }}
+                                                    </a>
+                                                    <form method="POST" action="{{ route('admin.categories.destroy', $category) }}"
+                                                        onsubmit="return confirm('{{ __('Delete this category?') }}')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-outline-danger btn-sm" type="submit">
+                                                            {{ __('Delete') }}
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

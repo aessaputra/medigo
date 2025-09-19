@@ -1,139 +1,114 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+@php($user = Auth::user())
+<aside class="navbar navbar-vertical navbar-expand-lg navbar-dark d-print-none" data-bs-theme="dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+            aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h1 class="navbar-brand navbar-brand-autodark">
+            <a href="{{ route('dashboard') }}">
+                <span class="navbar-brand-text">{{ config('app.name', 'Laravel') }}</span>
+            </a>
+        </h1>
+        <div class="navbar-nav flex-row d-lg-none">
+            @if ($user)
+                <div class="nav-item dropdown">
+                    <a class="nav-link d-flex lh-1 text-reset p-0" href="#" data-bs-toggle="dropdown"
+                        aria-label="{{ __('Open user menu') }}">
+                        <x-user-avatar :user="$user" size="sm" />
                     </a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-
-
-                @role('owner')
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.index')">
-                            {{ __('Manage Products') }}
-                        </x-nav-link>
-                    </div>
-
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
-                            {{ __('Manage Categories') }}
-                        </x-nav-link>
-                    </div>
-                @endrole
-
-
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('product_transactions.index')" :active="request()->routeIs('product_transactions.index')">
-                        {{ Auth::user()->hasRole('owner') ? __('Apotek Orders') : __('My Transactions') }}
-                    </x-nav-link>
-                </div>
-            </div>
-
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                            <span class="ti ti-user me-2"></span>{{ __('Profile') }}
+                        </a>
+                        <a href="{{ route('product_transactions.index') }}" class="dropdown-item">
+                            <span class="ti ti-clipboard-text me-2"></span>{{ __('Transactions') }}
+                        </a>
+                        <a href="{{ route('front.index') }}" class="dropdown-item">
+                            <span class="ti ti-shopping-cart me-2"></span>{{ __('Visit Store') }}
+                        </a>
+                        <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
+                            <button type="submit" class="dropdown-item">
+                                <span class="ti ti-logout me-2"></span>{{ __('Log Out') }}
+                            </button>
                         </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+        <div class="collapse navbar-collapse" id="sidebar-menu">
+            <ul class="navbar-nav pt-lg-3">
+                <li class="nav-item">
+                    <a class="nav-link{{ request()->routeIs('dashboard') ? ' active' : '' }}" href="{{ route('dashboard') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="ti ti-dashboard"></span>
+                        </span>
+                        <span class="nav-link-title">{{ __('Dashboard') }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ request()->routeIs('product_transactions.*') ? ' active' : '' }}"
+                        href="{{ route('product_transactions.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="ti ti-clipboard-list"></span>
+                        </span>
+                        <span class="nav-link-title">{{ __('Transactions') }}</span>
+                    </a>
+                </li>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+                @if ($user && $user->hasRole('buyer'))
+                    <li class="nav-item">
+                        <a class="nav-link{{ request()->routeIs('carts.*') ? ' active' : '' }}" href="{{ route('carts.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class="ti ti-basket"></span>
+                            </span>
+                            <span class="nav-link-title">{{ __('My Cart') }}</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($user && $user->hasRole('owner'))
+                    <li class="nav-item mt-4">
+                        <div class="nav-link disabled text-uppercase text-secondary fw-bold small">
+                            {{ __('Management') }}
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ request()->routeIs('admin.products.*') ? ' active' : '' }}"
+                            href="{{ route('admin.products.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class="ti ti-package"></span>
+                            </span>
+                            <span class="nav-link-title">{{ __('Manage Products') }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ request()->routeIs('admin.categories.*') ? ' active' : '' }}"
+                            href="{{ route('admin.categories.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class="ti ti-folders"></span>
+                            </span>
+                            <span class="nav-link-title">{{ __('Manage Categories') }}</span>
+                        </a>
+                    </li>
+                @endif
+
+                <li class="nav-item mt-4">
+                    <div class="nav-link disabled text-uppercase text-secondary fw-bold small">
+                        {{ __('Storefront') }}
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('front.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="ti ti-shopping-cart"></span>
+                        </span>
+                        <span class="nav-link-title">{{ __('Visit Store') }}</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-
-            <x-responsive-nav-link :href="route('front.index')" :active="request()->routeIs('front.index')">
-                {{ __('Store') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('product_transactions.index')" :active="request()->routeIs('product_transactions.index')">
-                {{ Auth::user()->hasRole('owner') ? __('Apotek Orders') : __('My Transactions') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div>
-</nav>
+</aside>

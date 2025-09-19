@@ -1,64 +1,65 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-row w-full justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div>
+            <div class="page-pretitle">{{ __('Operations') }}</div>
+            <h2 class="page-title">
                 {{ Auth::user()->hasRole('owner') ? __('Apotek Orders') : __('My Transactions') }}
             </h2>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white flex flex-col gap-y-5 overflow-hidden p-10 shadow-sm sm:rounded-lg">
-
-                @forelse($product_transactions as $transaction)
-                    <div class="item-card flex flex-row justify-between items-center">
-                        <a href="{{ route('product_transactions.show', $transaction) }}">
-                            <div class="flex flex-row items-center gap-x-3">
-                                <div>
-                                    <p class="text-base text-slate-500">
-                                        Total Transaksi
-                                    </p>
-                                    <h3 class="text-2xl font-bold text-indigo-950">
-                                        Rp. {{ $transaction->total_amount }}
-                                    </h3>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="hidden md:flex flex-col">
-                            <p class="text-base text-slate-500">
-                                Date
-                            </p>
-                            <h3 class="text-2xl font-bold text-indigo-950">
-                                {{ $transaction->created_at }}
-                            </h3>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('Transaction History') }}</h3>
+                </div>
+                <div class="card-body p-0">
+                    @if ($product_transactions->isEmpty())
+                        <div class="p-4 text-center text-secondary">
+                            {{ __('Belum ada transaksi') }}
                         </div>
-                        @if ($transaction->is_paid)
-                            <span class="py-1 px-3 rounded-full text-white bg-green-500">
-                                <p class="text-with font-bold text-sm">
-                                    Succsess
-                                </p>
-                            </span>
-                        @else
-                            <span class="py-1 px-3 rounded-full text-white bg-orange-500">
-                                <p class="text-with font-bold text-sm">
-                                    Pending
-                                </p>
-                            </span>
-                        @endif
-                        <div class="hidden md:flex flex-row items-center gap-x-3">
-                            <a href="{{ route('product_transactions.show', $transaction) }}"
-                                class="font-bold py-3 px-5 rounded-full text-white bg-indigo-700">View
-                                Details</a>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Invoice') }}</th>
+                                        <th>{{ __('Total') }}</th>
+                                        <th>{{ __('Date') }}</th>
+                                        <th>{{ __('Status') }}</th>
+                                        <th class="w-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($product_transactions as $transaction)
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route('product_transactions.show', $transaction) }}" class="fw-bold">
+                                                    #{{ $transaction->id }}
+                                                </a>
+                                            </td>
+                                            <td>Rp. {{ number_format($transaction->total_amount, 0, ',', '.') }}</td>
+                                            <td>{{ $transaction->created_at->format('d M Y H:i') }}</td>
+                                            <td>
+                                                @if ($transaction->is_paid)
+                                                    <span class="badge bg-success">{{ __('Success') }}</span>
+                                                @else
+                                                    <span class="badge bg-warning">{{ __('Pending') }}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="{{ route('product_transactions.show', $transaction) }}" class="btn btn-outline-primary btn-sm">
+                                                    {{ __('View Details') }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                    <hr class="my-3">
-                @empty
-                    <p>
-                        Belum ada transaksi
-                    </p>
-                @endforelse
-
+                    @endif
+                </div>
             </div>
         </div>
     </div>
